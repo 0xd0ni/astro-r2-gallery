@@ -6,7 +6,7 @@ import react from '@astrojs/react'
 import icon from 'astro-icon'
 
 export default defineConfig({
-  site: '',
+  site: 'https://gallery-allan.doniatinterweb.xyz',
   vite: {
     plugins: [tailwindcss()],
   },
