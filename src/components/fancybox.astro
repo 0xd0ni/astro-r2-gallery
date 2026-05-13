@@ -1,0 +1,87 @@
+---
+import '@fancyapps/ui/dist/fancybox/fancybox.css'
+import { Image } from 'astro:assets'
+import { distributeIntoColumns } from '@/lib/layout'
+
+type ColumnCount = 1 | 2 | 3 | 4 | 5
+
+const GRID_COLS: Record<ColumnCount, string> = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-3',
+  4: 'grid-cols-1 md:grid-cols-4',
+  5: 'grid-cols-1 md:grid-cols-5',
+}
+
+interface Props {
+  photos: string[]
+  columnCount?: ColumnCount
+}
+
+const { photos, columnCount = 4 } = Astro.props
+const columns = distributeIntoColumns(photos, columnCount)
+---
+
+<div
+  id="gallery"
+  class:list={[
+    'container mx-auto grid gap-4 pb-2 md:gap-2',
+    GRID_COLS[columnCount],
+  ]}
+>
+  {
+    columns.map((col) => (
+      <div class="grid h-full grid-cols-1 gap-4 lg:gap-2">
+        {col.map((src) => (
+          <a
+            href={src}
+            data-fancybox="gallery"
+            target="_blank"
+            class="border-secondary overflow-hidden border-[1px]"
+          >
+            <Image
+              src={src}
+              inferSize={true}
+              quality={85}
+              format="avif"
+              loading="lazy"
+              alt=""
+              class="w-full object-bottom transition duration-300 ease-in-out lg:h-full lg:w-auto lg:object-cover"
+            />
+          </a>
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  import { Fancybox } from '@fancyapps/ui/dist/fancybox/'
+
+  document.addEventListener('astro:page-load', () => {
+    Fancybox.bind('[data-fancybox]', {
+      theme: 'auto',
+      mainStyle: {
+        '--f-button-width': '44px',
+        '--f-button-height': '44px',
+        '--f-button-border-radius': '50%',
+        '--f-toolbar-padding': '16px',
+      },
+      Carousel: {
+        Arrows: false,
+        Toolbar: {
+          display: {
+            left: [],
+            middle: [],
+            right: ['close'],
+          },
+        },
+        transition: 'slide',
+      },
+    })
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    Fancybox.destroy()
+  })
+</script>

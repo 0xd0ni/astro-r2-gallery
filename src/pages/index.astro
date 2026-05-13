@@ -1,17 +1,20 @@
 ---
+import Breadcrumbs from '@/components/breadcrumbs.astro'
+import GalleryCard from '@/components/gallery-card.astro'
+import PageHead from '@/components/page-head.astro'
+import { CONTAINER } from '@/consts'
+import Layout from '@/layouts/layout.astro'
+import { getAlbums } from '@/lib/albums'
 
+const albums = await getAlbums()
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout class={CONTAINER}>
+  <PageHead slot="head" title="Gallery" />
+  <Breadcrumbs items={[{ label: '', icon: 'lucide:album' }]} />
+  <section>
+    <div class="grid gap-4 lg:grid-cols-2">
+      {albums.map((album) => <GalleryCard album={album} />)}
+    </div>
+  </section>
+</Layout>

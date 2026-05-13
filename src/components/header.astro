@@ -1,0 +1,25 @@
+---
+import Link from '@/components/link.astro'
+import ThemeToggle from '@/components/theme-toggle.astro'
+import { CONTAINER, SITE } from '@/consts'
+import { Image } from 'astro:assets'
+import logo from '../../public/static/logo.png'
+---
+
+<div>
+  <div
+    class:list={[
+      'mx-auto flex items-center justify-between gap-4 px-4 py-3',
+      CONTAINER,
+    ]}
+  >
+    <Link href="/" class="flex shrink-0 items-center justify-center gap-3">
+      <Image src={logo} alt="Logo" class="size-5 sm:size-6" />
+      <span
+        class="hidden h-full text-lg leading-none font-medium min-[400px]:block"
+        >{SITE.title}</span
+      >
+    </Link>
+    <ThemeToggle transition:persist />
+  </div>
+</div>

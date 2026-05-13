@@ -1,0 +1,49 @@
+---
+import Breadcrumbs from '@/components/breadcrumbs.astro'
+import FancyBox from '@/components/fancybox.astro'
+import Layout from '@/layouts/layout.astro'
+
+import { CONTAINER } from '@/consts'
+import { getAlbumPaths } from '@/lib/albums'
+
+export async function getStaticPaths() {
+  return getAlbumPaths()
+}
+
+const { id } = Astro.params
+const { photos } = Astro.props
+---
+
+<Layout class={CONTAINER}>
+  <div class="col-start-2">
+    <Breadcrumbs
+      items={[{ href: `/${id}`, label: id, icon: 'lucide:library-big' }]}
+    />
+  </div>
+
+  <div class="text-center">
+    <section class="col-start-2 mb-4 flex flex-col gap-y-6 text-left">
+      <div class="flex flex-col">
+        <div class="flex items-baseline justify-between">
+          <h1
+            class="text-2xl leading-tight font-medium text-pretty capitalize sm:text-3xl"
+          >
+            {id}
+          </h1>
+          <p class="mx-2">
+            ⇐
+            <a
+              href="/"
+              class="decoration-muted-foreground underline underline-offset-[3px]"
+            >
+              back
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="mt-4">
+      <FancyBox photos={photos} />
+    </section>
+  </div>
+</Layout>
