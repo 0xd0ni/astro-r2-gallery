@@ -10,15 +10,23 @@ export interface Album {
   count: number
 }
 
-export function readAlbumsMeta(): { name: string; pubDate: string }[] {
+export function readAlbumsMeta(): {
+  name: string
+  pubDate: string
+  cover?: string
+}[] {
   const { albums } = parse(
     readFileSync('./src/content/gallery/albums.toml', 'utf-8'),
-  ) as { albums: { name: string; pubDate: string }[] }
+  ) as { albums: { name: string; pubDate: string; cover?: string }[] }
   return albums
 }
 
 export async function getAlbums(): Promise<Album[]> {
   const entries = await getCollection('albums')
+  const meta = readAlbumsMeta()
+  const coverOverride = new Map(
+    meta.filter((a) => a.cover).map((a) => [a.name, a.cover!]),
+  )
 
   const albumMap = new Map<string, typeof entries>()
   for (const entry of entries) {
@@ -29,7 +37,10 @@ export async function getAlbums(): Promise<Album[]> {
 
   return [...albumMap.entries()]
     .map(([name, photos]) => {
-      const cover = photos[Math.floor(Math.random() * photos.length)]
+      const specified = coverOverride.get(name)
+      const cover =
+        (specified && photos.find((p) => p.data.title === specified)) ||
+        photos[Math.floor(Math.random() * photos.length)]
       return {
         name,
         pubDate: photos[0].data.pubDate,

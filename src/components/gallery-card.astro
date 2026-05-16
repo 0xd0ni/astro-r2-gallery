@@ -18,14 +18,14 @@ const { album } = Astro.props
 ---
 
 <div
-  class="bg-destructive text-secondary-foreground border-foreground hover:bg-secondary/50 border transition-colors duration-300 ease-in-out sm:h-auto lg:h-full"
+  class="border-foreground hover:bg-secondary/50 border bg-destructive text-secondary-foreground transition-colors duration-300 ease-in-out sm:h-auto lg:h-full"
 >
   <Link href={`/${album.name}`} class="flex h-full flex-col justify-start">
-    <div class="border-foreground h-48 w-full border-b pb-0">
+    <div class="h-48 w-full">
       <Image
         src={album.cover}
         alt={album.coverAlt}
-        quality="mid"
+        quality="high"
         width="768"
         height="480"
         class:list={[
@@ -34,7 +34,7 @@ const { album } = Astro.props
         ]}
       />
     </div>
-    <div class="bg-card text-foreground p-2">
+    <div class="border-foreground border-t bg-card p-2 text-foreground">
       <div class="mb-2 flex flex-wrap items-center justify-between gap-x-2">
         <h2 class="text-xl font-medium capitalize">
           {album.name}
@@ -46,7 +46,7 @@ const { album } = Astro.props
           </span>
         </p>
       </div>
-      <p class="mt-4 mb-2 text-sm">
+      <p class="mb-2 mt-4 text-sm">
         {album.count} photo{album.count !== 1 ? 's' : ''}
       </p>
     </div>

@@ -21,6 +21,9 @@ export default defineConfig({
   },
 
   image: {
+    service: {
+      entrypoint: './src/lib/image-service.ts',
+    },
     // note that: domain expect hostnames, not full URLs
     domains: ['astro.build', `${process.env.R2_DOMAIN}`],
     remotePatterns: [{ protocol: 'https' }],
