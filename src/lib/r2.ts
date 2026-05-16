@@ -18,6 +18,10 @@ function bucketUrl(params: Record<string, string>) {
   return url.toString()
 }
 
+function objectUrl(key: string): string {
+  return `${import.meta.env.R2_ENDPOINT}/${import.meta.env.GALLERY_BUCKET}/${encodeURIComponent(key).replace(/%2F/g, '/')}`
+}
+
 function extractTags(xml: string, tag: string): string[] {
   return [...xml.matchAll(new RegExp(`<${tag}>(.*?)<\/${tag}>`, 'gs'))].map(
     (m) => m[1],
@@ -47,6 +51,20 @@ export const r2 = {
     const [nextContinuationToken] = extractTags(xml, 'NextContinuationToken')
 
     return { contents, isTruncated, nextContinuationToken }
+  },
+
+  async get(key: string): Promise<Uint8Array | null> {
+    const res = await getClient().fetch(objectUrl(key))
+    if (!res.ok) return null
+    return new Uint8Array(await res.arrayBuffer())
+  },
+
+  async put(key: string, body: Uint8Array, contentType: string): Promise<void> {
+    await getClient().fetch(objectUrl(key), {
+      method: 'PUT',
+      headers: { 'Content-Type': contentType },
+      body: body as BodyInit,
+    })
   },
 }
 
