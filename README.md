@@ -14,16 +14,16 @@ A personal photo gallery template built with [Astro](https://astro.build/) and [
 - **Masonry grid with lightbox.** Photos are distributed into columns and open in a fullscreen viewer powered by [Fancybox](https://fancyapps.com/fancybox/).
 - **Optimized image delivery.** Photos are served as AVIF from R2 via a public custom domain, with Astro's `<Image />` handling lazy loading and sizing.
 - **Incremental builds.** The R2 content loader skips photos that haven't changed since the last build, keeping rebuild times fast.
+- **Build-time image cache.** Optimized images are stored in R2 under a `_cache/` prefix. After a cold first build, subsequent builds skip Sharp re-encoding entirely. Image optimization time scales with the number of new or changed photos only.
 - **Dark mode.** Theme toggle included, persisted via `data-theme` attribute.
 
 ![Album detail view](./public/demo/main-01.png)
-
 
 ## Getting Started
 
 ### 1. Set up Cloudflare R2
 
-Create an R2 bucket and an API token with read access. Enable a public custom domain on the bucket for image delivery.
+Create an R2 bucket and an API token with read and write access. Enable a public custom domain on the bucket for image delivery.
 
 ### 2. Configure environment variables
 
