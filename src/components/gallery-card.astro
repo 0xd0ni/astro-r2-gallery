@@ -20,7 +20,7 @@ const { album } = Astro.props
 <div
   class="not-prose group border-foreground bg-card text-foreground hover:bg-secondary/50 h-full border transition-colors duration-300 ease-in-out"
 >
-  <Link href={`/gallery/${album.name}`} class="flex h-full flex-col">
+  <Link href={`/${album.name}`} class="flex h-full flex-col">
     <div class="h-48 w-full overflow-hidden">
       <Image
         src={album.cover}
