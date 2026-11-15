@@ -31,7 +31,7 @@ const columns = distributeIntoColumns(photos, columnCount)
 >
   {
     columns.map((col) => (
-      <div class="grid h-full grid-cols-1 gap-4 lg:gap-2">
+      <div class="grid grid-cols-1 content-start gap-4 lg:gap-2">
         {col.map((src) => (
           <a
             href={src}
